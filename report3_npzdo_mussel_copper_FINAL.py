@@ -1,7 +1,5 @@
-"""
 Report 3 — Impact of Copper Toxicity on Blue Mussel Biofiltration Capacity
 DTU Course 25314 — Computational Marine Ecological Modelling
-Marc, May 2025
 
 Coupled 1-D NPZDO water-column model with Dynamic Energy Budget (DEB)
 sub-model for Mytilus spp. and an external Cu2+ toxicity forcing.
@@ -13,7 +11,7 @@ Saves 8 figures as PNG files.
 References: Buer et al. (2020), Maar et al. (2015, 2018),
             van der Veer et al. (2006), Kooijman (2010),
             Fasham et al. (1990), Viarengo et al. (1999)
-"""
+
 
 import numpy as np
 import matplotlib
@@ -40,7 +38,7 @@ z_cell   = np.linspace(dz / 2, z_Bottom - dz / 2, nz)   # cell centres [m]
 z_face   = np.linspace(0, z_Bottom, nz + 1)              # cell faces [m]
 
 # --- Light ------------------------------------------------------------------
-kw          = 0.45       # seawater attenuation [m⁻¹] (turbid Kattegat, CDOM)
+kw          = 0.45       # seawater attenuation [m⁻¹] 
 kp          = 0.05       # phytoplankton self-shading [m² mmol N⁻¹]
 L0_summer   = 400.0      # surface PAR, summer [µmol photons m⁻² s⁻¹]
 L0_winter   = 10.0       # surface PAR, winter [µmol photons m⁻² s⁻¹]
@@ -60,7 +58,7 @@ kappa_N   = 10.0         # nutrient exchange velocity at bottom [m day⁻¹]
 # --- Phytoplankton ----------------------------------------------------------
 g_Pmax = 1.5             # max growth rate [day⁻¹]
 kN     = 0.5             # nutrient half-saturation [mmol N m⁻³]
-m_P    = 0.05            # linear mortality [day⁻¹] (Fasham et al. 1990)
+m_P    = 0.05            # linear mortality [day⁻¹] 
 w_P    = 0.0             # sinking velocity [m day⁻¹]
 
 # --- Zooplankton ------------------------------------------------------------
@@ -117,7 +115,7 @@ e_init = 0.5             # scaled reserve density [-]
 # --- Copper parameters (Viarengo et al. 1999; Wang & Rainbow 2005) ----------
 EC50_Cu       = 50.0     # half-inhibition concentration [µg Cu L⁻¹]
 n_hill        = 2.0      # Hill coefficient (sigmoidal steepness)
-Cu_background = 2.0      # ambient background [µg Cu L⁻¹] (Förstner & Wittmann 1981)
+Cu_background = 2.0      # ambient background [µg Cu L⁻¹] 
 Cu_pulse_day  = 60.0     # pulse start [day]
 Cu_pulse_dur  = 30.0     # pulse duration [days]
 Cu_decay_rate = 0.05     # exponential decay constant [day⁻¹]
@@ -280,7 +278,7 @@ def model_rhs(t, y, Cu_pulse_magnitude):
     P_cleared  = F_rate * f_food * P[z_mussel_idx] * (n_mussel / dz)
     N_excreted = 0.20 * P_cleared             # ~20% of ingested N returned as DIN
 
-    # DEB reserve and growth dynamics (Kooijman 2010; Maar et al. 2015)
+    # DEB reserve and growth dynamics
     f_food_eff = min(f_Cu * f_food, 1.0)      # Cu reduces effective food intake
     de_dt = (f_food_eff * f_T - e_m) * v_dot / max(L_m, 0.01)
     p_mob = e_m * v_dot / max(L_m, 0.01)
